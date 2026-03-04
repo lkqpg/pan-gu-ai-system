@@ -1,0 +1,46 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm install && npm run build"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+
+[[services]]
+name = "pan-gu-ai-backend"
+port = 3001
+env = { NODE_ENV = "production" }
+
+[[services]]
+name = "pan-gu-ai-writer"
+schedule = "0 */2 * * *"  # 每2小时运行一次
+command = "node scripts/ai-writer.js"
+
+[[services]]
+name = "pan-gu-ai-monitor"
+schedule = "*/5 * * * *"  # 每5分钟运行一次
+command = "node scripts/monitor.js"
+
+[variables]
+NODE_ENV = "production"
+PORT = "3001"
+
+# 数据库配置（需要手动设置）
+# MONGODB_URI = "mongodb+srv://user:pass@cluster.mongodb.net/pan-gu-ai"
+
+# AI服务配置（需要手动设置）
+# HUGGINGFACE_API_KEY = "your_key_here"
+# OPENAI_API_KEY = "your_key_here"
+
+# 平台API密钥（需要手动设置）
+# QIDIAN_API_KEY = "your_key_here"
+# JINJIANG_API_KEY = "your_key_here"
+# FANQIE_API_KEY = "your_key_here"
+
+# Qveris API配置
+QVERIS_API_KEY = "sk-3wKsq7KwHPYU8CjwkznECR3iYbE9fN5S2NcaTfXuda0"
+
+# 监控配置（需要手动设置）
+# WEBHOOK_URL = "your_webhook_here"
+# ALERT_EMAIL = "your_email@example.com"
